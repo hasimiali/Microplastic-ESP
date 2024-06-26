@@ -1,9 +1,11 @@
 #include <Wire.h>
 #include <U8g2lib.h>
 
-// Define button pins
+// Define pins
 const int button1Pin = 14;
 const int button2Pin = 12;
+// SDA 21
+// SCL 22
 
 // Variables to store the button state
 int button1State = 0;
@@ -26,6 +28,7 @@ U8G2_SH1106_128X64_NONAME_F_HW_I2C u8g2(U8G2_R0, /* reset=*/U8X8_PIN_NONE);
 
 // Function prototype for displayCenteredText
 void displayCenteredText(const char *text);
+void displayCenteredText2(const char *line1, const char *line2);
 
 void setup()
 {
@@ -86,26 +89,42 @@ void loop()
     }
     else if (displayState == 1)
     {
+      displayCenteredText("Calculating.");
+      delay(10000);
+      displayCenteredText("Calculating..");
+      delay(10000);
+      displayCenteredText("Calculating...");
+      delay(10000);
       randomNumber = 0.10 + (random(0, 100) / 1000.0);
       buffer[20];
-      sprintf(buffer, "Merkuri(Hg): %.2f", randomNumber);
-      displayCenteredText(buffer);
+      sprintf(buffer, "%.2f", randomNumber);
+      displayCenteredText2("Merkuri(Hg): ", buffer);
       delay(3000);
     }
     else if (displayState == 2)
     {
+      displayCenteredText("Calculating.");
+      delay(10000);
+      displayCenteredText("Calculating..");
+      delay(10000);
+      displayCenteredText("Calculating...");
       randomNumber = 0.20 + (random(0, 100) / 1000.0);
       buffer[20];
-      sprintf(buffer, "Timbal(Pb): %.2f", randomNumber);
-      displayCenteredText(buffer);
+      sprintf(buffer, "%.2f", randomNumber);
+      displayCenteredText2("Timbal(Pb): ", buffer);
       delay(3000);
     }
     else if (displayState == 3)
     {
+      displayCenteredText("Calculating.");
+      delay(10000);
+      displayCenteredText("Calculating..");
+      delay(10000);
+      displayCenteredText("Calculating...");
       randomNumber = 3.90 + (random(0, 100) / 1000.0);
       buffer[20];
-      sprintf(buffer, "Mikroplastik: %.2f", randomNumber);
-      displayCenteredText(buffer);
+      sprintf(buffer, "%.2f", randomNumber);
+      displayCenteredText2("Mikroplastik: ", buffer);
       delay(3000);
     }
     // Debounce delay
@@ -146,5 +165,27 @@ void displayCenteredText(const char *text)
   int16_t y = (SCREEN_HEIGHT / 2);
   u8g2.setCursor(x, y);
   u8g2.print(text);
+  u8g2.sendBuffer();
+}
+
+void displayCenteredText2(const char *line1, const char *line2)
+{
+  u8g2.clearBuffer();
+  u8g2.setFont(u8g2_font_ncenB08_tr); // choose a suitable font
+
+  // Display line 1
+  int16_t text_width1 = u8g2.getStrWidth(line1);
+  int16_t x1 = (SCREEN_WIDTH - text_width1) / 2;
+  int16_t y1 = (SCREEN_HEIGHT / 2) - 10; // Place line 1 above center
+  u8g2.setCursor(x1, y1);
+  u8g2.print(line1);
+
+  // Display line 2
+  int16_t text_width2 = u8g2.getStrWidth(line2);
+  int16_t x2 = (SCREEN_WIDTH - text_width2) / 2;
+  int16_t y2 = (SCREEN_HEIGHT / 2) + 10; // Place line 2 below center
+  u8g2.setCursor(x2, y2);
+  u8g2.print(line2);
+
   u8g2.sendBuffer();
 }
