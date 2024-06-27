@@ -20,6 +20,7 @@ int lastButton2State = HIGH;
 #define SCREEN_HEIGHT 64
 
 int displayState = 0;
+int lastState = 0;
 float randomNumber;
 char buffer[20];
 
@@ -51,7 +52,7 @@ void loop()
 
   if (displayState == 0)
   {
-    displayCenteredText("Welcome to I-Tongue");
+    displayCenteredText("Welcome to LecSense");
   }
   else if (displayState == 1)
   {
@@ -64,6 +65,21 @@ void loop()
   else if (displayState == 3)
   {
     displayCenteredText("Mikro Plastik Mode");
+  }
+  else if (displayState == 4)
+  {
+    if (lastState == 1)
+    {
+      displayCenteredText2("Merkuri(Hg): ", buffer);
+    }
+    else if (lastState == 2)
+    {
+      displayCenteredText2("Timbal(Pb): ", buffer);
+    }
+    else if (lastState == 3)
+    {
+      displayCenteredText2("Mikroplastik: ", buffer);
+    }
   }
 
   // Read the state of button 1
@@ -90,42 +106,48 @@ void loop()
     else if (displayState == 1)
     {
       displayCenteredText("Calculating.");
-      delay(10000);
+      delay(4000);
       displayCenteredText("Calculating..");
-      delay(10000);
+      delay(4000);
       displayCenteredText("Calculating...");
-      delay(10000);
+      delay(4000);
       randomNumber = 0.10 + (random(0, 100) / 1000.0);
       buffer[20];
       sprintf(buffer, "%.2f", randomNumber);
-      displayCenteredText2("Merkuri(Hg): ", buffer);
-      delay(3000);
+      displayState = 4;
+      lastState = 1;
     }
     else if (displayState == 2)
     {
       displayCenteredText("Calculating.");
-      delay(10000);
+      delay(4000);
       displayCenteredText("Calculating..");
-      delay(10000);
+      delay(4000);
       displayCenteredText("Calculating...");
+      delay(4000);
       randomNumber = 0.20 + (random(0, 100) / 1000.0);
       buffer[20];
       sprintf(buffer, "%.2f", randomNumber);
-      displayCenteredText2("Timbal(Pb): ", buffer);
-      delay(3000);
+      displayState = 4;
+      lastState = 2;
     }
     else if (displayState == 3)
     {
       displayCenteredText("Calculating.");
-      delay(10000);
+      delay(4000);
       displayCenteredText("Calculating..");
-      delay(10000);
+      delay(4000);
       displayCenteredText("Calculating...");
+      delay(4000);
       randomNumber = 3.90 + (random(0, 100) / 1000.0);
       buffer[20];
       sprintf(buffer, "%.2f", randomNumber);
-      displayCenteredText2("Mikroplastik: ", buffer);
-      delay(3000);
+      displayState = 4;
+      lastState = 3;
+    }
+    else if (displayState == 4)
+    {
+      displayState = lastState;
     }
     // Debounce delay
     delay(200);
