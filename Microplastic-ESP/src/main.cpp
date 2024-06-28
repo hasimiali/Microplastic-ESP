@@ -52,7 +52,7 @@ void loop()
 
   if (displayState == 0)
   {
-    displayCenteredText("Welcome to LecSense");
+    displayCenteredText("LecSens");
   }
   else if (displayState == 1)
   {
